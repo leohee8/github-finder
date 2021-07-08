@@ -1,38 +1,61 @@
-import React,{Component} from "react"
-import Navbar from "./components/layout/Navbar"
-import Users from "./components/users/Users"
+import React,{useState} from "react"
+import {BrowserRouter as Router,Switch,Route} from "react-router-dom"
 import axios from "axios"
+import Navbar from "./components/layout/Navbar"
+import Alert from "./components/layout/Alert"
+import About from "./components/pages/About"
+import Users from "./components/users/Users"
+import User from "./components/users/User"
+import Search from "./components/users/Search"
+import GithubState from "./context/github/githubState"
 import "./App.css"
 
-class App extends Component{
-	// getBirthday=()=>"8th August 1979"
-	state={
-		users:[],
-		loading:false
+const App=()=>{
+	const
+		[repos,setRepos]=useState([]),
+		[loading,setLoading]=useState(false),
+		[alert,setAlert]=useState(null)
+	//>> Get users repos
+	const getUserRepos=async userName=>{
+		setLoading(true)
+		const res=await axios.get(`https://api.github.com/users/${userName}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+		setRepos(res.data)
+		setLoading(false)
 	}
-	async componentDidMount(){
-		this.setState({loading:true})
-		const res=await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
-		this.setState({users:res.data,loading:false})
+	const showAlert=(msg,type)=>{
+		setAlert({msg,type})
+		setTimeout(()=>setAlert(null),3000)
 	}
-	render(){
-		const
-			appName=process.env.REACT_APP_APPNAME
-			// myName="Leo Hee Fook Yew",
-			// loading=false,
-			// showName=true
-		document.title=appName
+	const appName=process.env.REACT_APP_APPNAME
+	document.title=appName
 		return(
-			<div className="App">
-				<Navbar title={appName}/>
-				<div className="container">
-					<Users loading={this.state.loading} users={this.state.users}/>
+			<GithubState>
+				<Router>
+				<div className="App">
+					<Navbar title={appName}/>
+					<div className="container">
+						<Alert alert={alert}/>
+						<Switch>
+							<Route exact path="/" render={props=>(
+								<>
+									<Search showAlert={showAlert}/>
+									<Users/>
+								</>
+							)}></Route>
+							<Route exact path="/about" component={About}/>
+							<Route exact path="/user/:userName" render={props=>(
+								<User
+									{...props}
+									getUserRepos={getUserRepos}
+									repos={repos}
+								/>
+							)}/>
+						</Switch>
+					</div>
 				</div>
-				{/* {loading?<h4>Loading...</h4>:<p>Hi! Welcome {showName && myName.toUpperCase()}</p>}
-				<p>Your birthday is {this.getBirthday()}</p> */}
-			</div>
+				</Router>
+			</GithubState>
 		)
-	}
 }
 
 export default App

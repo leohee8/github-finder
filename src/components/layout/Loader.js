@@ -1,5 +1,5 @@
 import React from "react"
-import Loader from "../../loader.svg"
+import LoaderSVG from "../../loader.svg"
 
 const Loading=()=>{
 	const loaderStyle={
@@ -9,7 +9,7 @@ const Loading=()=>{
 	}
 	return(
 		<>
-			<img src={Loader} alt="Loading" style={loaderStyle}/>
+			<img src={LoaderSVG} alt="Loading" style={loaderStyle}/>
 		</>
 	)
 }

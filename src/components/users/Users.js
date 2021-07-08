@@ -1,9 +1,11 @@
-import React from "react"
-import UserItem from "./UserItem"
+import React,{useContext} from "react"
 import Loader from "../layout/Loader"
-import propTypes from "prop-types"
+import UserItem from "./UserItem"
+import GithubContext from "../../context/github/githubContext"
 
-const Users=({users,loading})=>{
+const Users=()=>{
+	const githubContext=useContext(GithubContext)
+	const {users,loading}=githubContext
 	const userStyle={
 		display:"grid",
 		gridTemplateColumns:"repeat(5,1fr)",
@@ -17,11 +19,6 @@ const Users=({users,loading})=>{
 		</div>
 		</>
 	)
-}
-
-Users.propTypes={
-	users:propTypes.array.isRequired,
-	loading:propTypes.bool.isRequired
 }
 
 export default Users
