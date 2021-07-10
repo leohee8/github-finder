@@ -4,16 +4,9 @@ import GithubContext from "./githubContext"
 import GithubReducer from "./githubReducer"
 import {SEARCH_USERS,SET_LOADING,CLEAR_USERS,GET_USER,GET_REPOS} from "../types"
 
-let githubApi,githubClientId,githubClientSecret
-if(process.env.NODE_ENV!=="production"){
-	githubApi=process.env.REACT_APP_GITHUB_API
-	githubClientId=process.env.REACT_APP_GITHUB_CLIENT_ID
-	githubClientSecret=process.env.REACT_APP_GITHUB_CLIENT_SECRET
-}else{
-	githubApi=process.env.GITHUB_API
-	githubClientId=process.env.GITHUB_CLIENT_ID
-	githubClientSecret=process.env.GITHUB_CLIENT_SECRET
-}
+const githubApi=process.env.REACT_APP_GITHUB_API
+const githubClientId=process.env.REACT_APP_GITHUB_CLIENT_ID
+const githubClientSecret=process.env.REACT_APP_GITHUB_CLIENT_SECRET
 
 const GithubState=props=>{
 	const initialState={
