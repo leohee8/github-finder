@@ -11,11 +11,11 @@ import AlertState from "./context/alert/alertState"
 import "./App.css"
 
 let appName
-if(process.env.NODE_ENV!=="production"){
-	appName=process.env.REACT_APP_APPNAME
-}else{
-	appName=process.env.APPNAME
-}
+// if(process.env.NODE_ENV!=="production"){
+appName=process.env.REACT_APP_APPNAME
+// }else{
+// 	appName=process.env.APPNAME
+// }
 
 console.log(process.env.APPNAME)
 
