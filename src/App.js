@@ -17,6 +17,8 @@ if(process.env.NODE_ENV!=="production"){
 	appName=process.env.APPNAME
 }
 
+console.log(process.env.APPNAME)
+
 const App=()=>{
 	document.title=appName
 		return(
