@@ -16,7 +16,7 @@ const GithubState=props=>{
 	//>> Search Github users
 	const searchUsers=async userName=>{
 		setLoading()
-		const res=await axios.get(`https://api.github.com/search/users?q=${userName}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+		const res=await axios.get(`${process.env.REACT_APP_GITHUB_API}search/users?q=${userName}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
 		dispatch({
 			type:SEARCH_USERS,
 			payload:res.data.items
@@ -25,9 +25,18 @@ const GithubState=props=>{
 	//>> Get the Github user
 	const getUser=async userName=>{
 		setLoading()
-		const res=await axios.get(`https://api.github.com/users/${userName}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+		const res=await axios.get(`${process.env.REACT_APP_GITHUB_API}users/${userName}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
 		dispatch({
 			type:GET_USER,
+			payload:res.data
+		})
+	}
+	//>> Get users repos
+	const getUserRepos=async userName=>{
+		setLoading()
+		const res=await axios.get(`${process.env.REACT_APP_GITHUB_API}users/${userName}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+		dispatch({
+			type:GET_REPOS,
 			payload:res.data
 		})
 	}
@@ -48,7 +57,8 @@ const GithubState=props=>{
 				loading:state.loading,
 				searchUsers,
 				clearUsers,
-				getUser
+				getUser,
+				getUserRepos
 			}}>
 			{props.children}
 		</GithubContext.Provider>
